@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            loading();
+        });
+
+        function loading() {
+            let check = $('#done').prop('checked');
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8080/todo/todo?done=' + check,
+                dataType: 'json'
+            }).done(function (data) {
+                $('#descTable tbody').empty()
+                for (let desc of data) {
+                    $('#descTable thead:last').after('<tbody>'
+                        + '<tr>'
+                        + '<td>'
+                        + ' <input class="form-check" type="checkbox" id=' + desc.id
+                        + ' onclick="update(id)">'
+                        + '</td>'
+                        + '<td >' + desc.description + '</td>'
+                        + '<td>' + desc.created.day + ':' + desc.created.month
+                        + ':' + desc.created.year + '</td>'
+                        + '</tr>'
+                        + '</tbody>');
+                    $('#' + desc.id).attr('checked', desc.done);
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
+        }
+
+        function addDesc() {
+            if (validate()) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:8080/todo/todo',
+                    data: 'desc=' + $('#descForm').val(),
+                    dataType: 'text'
+                }).done(function (data) {
+                    $('#descForm').val("");
+                    loading();
+                }).fail(function (err) {
+                    alert(err);
+                });
+            }
+        }
+
+        function update(id) {
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/todo/update',
+                data: 'id=' + id,
+                dataType: 'text'
+            }).done(function (data) {
+                loading();
+            }).fail(function (err) {
+                alert(err);
+            });
+        }
+
+        function validate() {
+            const desc = $('#descForm').val();
+            $(".invalid-feedback").remove();
+            $("#descForm").removeClass("is-invalid");
+            if (desc.length==0) {
+                $('#descForm').addClass("is-invalid").after('<div class="invalid-feedback">Введите задание</div>');
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+    <title>Список заданий</title>
+</head>
+<body>
+<div class="container pt-5">
+    <div class="row">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                <h3 class="text-center">
+                    Список заданий
+                </h3>
+            </div>
+            <div class="card-body ">
+                <form class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" id="descForm" placeholder="Добавить задание">
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-primary" onclick=addDesc()>Добавить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <table class="table table-bordered border-primary table-hover" id="descTable">
+            <thead>
+            <tr>
+                <th scope="col" class="col-1">
+                    <input class="form-check" type="checkbox" id="done" onclick="loading()">
+
+                </th>
+                <th scope="col">Наименование задания</th>
+                <th scope="col">Дата</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
+
