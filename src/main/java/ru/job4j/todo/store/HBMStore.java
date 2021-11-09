@@ -33,9 +33,7 @@ public class HBMStore implements Store, AutoCloseable {
 
     @Override
     public Collection<Item> findAllUnCheckedItems() {
-        return this.tx(
-                session ->  session.createQuery("from Item where done=false").list()
-        );
+        return this.tx(session -> session.createQuery("from Item where done=false").list());
     }
 
     @Override
