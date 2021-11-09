@@ -2,13 +2,15 @@ package ru.job4j.todo.store;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 import ru.job4j.todo.model.Item;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.function.Function;
 
 public class HBMStore implements Store, AutoCloseable {
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -26,55 +28,59 @@ public class HBMStore implements Store, AutoCloseable {
 
     @Override
     public Collection<Item> findAllItems() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<Item> result = session.createQuery("from Item").list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(session -> session.createQuery("from Item").list());
     }
 
     @Override
     public Collection<Item> findAllUnCheckedItems() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<Item> result = session.createQuery("from Item where done=false ").list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(
+                session -> {
+                    final Query query = session.createQuery("from Item where done=false");
+                    return query.list();
+                }
+        );
     }
 
     @Override
     public void saveItem(Item item) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(item);
-        session.getTransaction().commit();
-        session.close();
+        this.tx(session -> session.save(item));
     }
 
     @Override
     public void updateItem(int id) {
         Item item = searchItemForId(id);
         boolean done = !item.isDone();
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.createQuery("update Item set done=:done where id=:id")
-                .setParameter("id", id)
-                .setParameter("done", done).executeUpdate();
-        session.getTransaction().commit();
-        session.close();
+        this.tx(session ->
+                session.createQuery("update Item set done=:done where id=:id")
+                        .setParameter("id", id)
+                        .setParameter("done", done)
+                        .executeUpdate());
     }
 
     private Item searchItemForId(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Item result = session.get(Item.class, id);
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(
+                session -> {
+                    final Query query = session.createQuery("from Item where id=:id")
+                            .setParameter("id", id);
+                    return (Item) query.uniqueResult();
+                }
+        );
     }
 
+    private <T> T tx(final Function<Session, T> command) {
+        final Session session = sf.openSession();
+        final Transaction tx = session.beginTransaction();
+        try {
+            T rsl = command.apply(session);
+            tx.commit();
+            return rsl;
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
 
     @Override
     public void close() throws Exception {
@@ -83,11 +89,9 @@ public class HBMStore implements Store, AutoCloseable {
 
     public static void main(String[] args) {
         Store store = HBMStore.instOf();
-
         store.saveItem(new Item("Поесть колбасы"));
-        store.saveItem(new Item("Поесть грудинки"));
         store.saveItem(new Item("Убрать квартиру"));
-        store.updateItem(78);
+        store.updateItem(50);
         store.findAllItems().forEach(System.out::println);
         store.findAllUnCheckedItems().forEach(System.out::println);
     }
