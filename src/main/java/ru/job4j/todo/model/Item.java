@@ -18,21 +18,19 @@ public class Item {
     @CreationTimestamp
     private LocalDate created;
     private boolean done;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Item(int id, String description, LocalDate created, boolean done) {
-        this.id = id;
-        this.description = description;
-        this.created = created;
-        this.done = done;
-    }
 
-    public Item(String description, boolean done) {
-        this.description = description;
-        this.done = done;
-    }
 
     public Item(String description) {
         this.description = description;
+    }
+
+    public Item(String description, User user) {
+        this.description = description;
+        this.user = user;
     }
 
     public Item() {

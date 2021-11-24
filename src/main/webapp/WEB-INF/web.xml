@@ -1,26 +1,63 @@
 <!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
-  <servlet>
-    <servlet-name>TodoServlet</servlet-name>
-    <servlet-class>ru.job4j.todo.servlets.TodoServlet</servlet-class>
-  </servlet>
+    <display-name>Archetype Created Web Application</display-name>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>ru.job4j.todo.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
 
-  <servlet>
-    <servlet-name>UpdateServlet</servlet-name>
-    <servlet-class>ru.job4j.todo.servlets.UpdateServlet</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name>TodoServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlets.TodoServlet</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name>TodoServlet</servlet-name>
-    <url-pattern>/todo</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlets.UpdateServlet</servlet-class>
+    </servlet>
 
-  <servlet-mapping>
-    <servlet-name>UpdateServlet</servlet-name>
-    <url-pattern>/update</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlets.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlets.RegServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlets.LogoutServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TodoServlet</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UpdateServlet</servlet-name>
+        <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/log</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RegServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
 </web-app>

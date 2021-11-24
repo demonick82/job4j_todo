@@ -8,6 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 
 import java.util.Collection;
 import java.util.function.Function;
@@ -52,6 +53,23 @@ public class HBMStore implements Store, AutoCloseable {
                         .executeUpdate());
     }
 
+    @Override
+    public void saveUser(User user) {
+        this.tx(session -> session.save(user));
+
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return this.tx(
+                session -> {
+                    final Query query = session.createQuery("from User where email=:email")
+                            .setParameter("email", email);
+                    return (User) query.uniqueResult();
+                }
+        );
+    }
+
     private Item searchItemForId(int id) {
         return this.tx(
                 session -> {
@@ -84,9 +102,7 @@ public class HBMStore implements Store, AutoCloseable {
 
     public static void main(String[] args) {
         Store store = HBMStore.instOf();
-        store.saveItem(new Item("Поесть колбасы"));
-        store.saveItem(new Item("Убрать квартиру"));
-        store.updateItem(50);
+        System.out.println(store.findUserByEmail("demonick82@gmail.com"));
         store.findAllItems().forEach(System.out::println);
         store.findAllUnCheckedItems().forEach(System.out::println);
     }

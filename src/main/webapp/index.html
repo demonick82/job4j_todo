@@ -20,6 +20,13 @@
 <body>
 <div class="container pt-5">
     <div class="row">
+        <ul class="nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/todo/logout"> Выйти </a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
                 <h3 class="text-center">
@@ -45,18 +52,16 @@
             <tr>
                 <th scope="col" class="col-1">
                     <input class="form-check" type="checkbox" id="done" onclick="loading()">
-
                 </th>
                 <th scope="col">Наименование задания</th>
+                <th scope="col">Имя пользователя</th>
                 <th scope="col">Дата</th>
             </tr>
             </thead>
             <tbody>
-
             </tbody>
         </table>
     </div>
-
 </div>
 </body>
 </html>
