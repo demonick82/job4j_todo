@@ -14,14 +14,17 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         Store store = HBMStore.instOf();
-        PrintWriter writer = resp.getWriter();
+        PrintWriter writer  = resp.getWriter();
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         User user = store.findUserByEmail(email);
         if (user != null && user.getPassword().equals(password)) {
             HttpSession sc = req.getSession();
             sc.setAttribute("user", user);
-            writer.print("200 password accepted");
+            writer.print("202 password accepted");
+        } else {
+            writer.print("401 unauthorized");
+
         }
     }
 }

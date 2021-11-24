@@ -1,19 +1,18 @@
 package ru.job4j.todo.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-@javax.persistence.Entity
-@javax.persistence.Table(name = "users")
+@Entity
+@Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private java.lang.String name;
-    private java.lang.String email;
-    private java.lang.String password;
+    private String name;
+    private String email;
+    private String password;
 
     public User(String name, String email, String password) {
         this.name = name;
@@ -28,7 +27,7 @@ public class User {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id)  {
         this.id = id;
     }
 

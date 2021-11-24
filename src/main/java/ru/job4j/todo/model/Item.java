@@ -22,8 +22,6 @@ public class Item {
     @JoinColumn(name = "user_id")
     private User user;
 
-
-
     public Item(String description) {
         this.description = description;
     }
@@ -34,7 +32,6 @@ public class Item {
     }
 
     public Item() {
-
     }
 
     public int getId() {

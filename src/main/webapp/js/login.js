@@ -33,9 +33,9 @@ function loginUser() {
             dataType: 'text'
         }).done(function (data) {
             console.log(data)
-            if (data == "200 password accepted") {
+            if (data == "202 password accepted") {
                 window.location.href = "/todo/index.html";
-            } else {
+            } else if (data == "401 unauthorized") {
                 $(".error").remove();
                 $('#pass').after('<div class="error" style="color:#ff0000; font-weight: bold">' +
                     'Неверный логин или пароль</div>')

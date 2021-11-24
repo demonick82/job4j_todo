@@ -25,7 +25,10 @@ public class RegServlet extends HttpServlet {
             store.saveUser(newUser);
             HttpSession sc = req.getSession();
             sc.setAttribute("user", newUser);
-            writer.print("200 user not exists");
+            writer.print("201 user create");
+        } else {
+            writer.print("409 email already exists");
+
         }
     }
 }

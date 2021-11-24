@@ -24,7 +24,8 @@ function validateReg() {
         $('#pass').addClass("is-invalid").after('<div class="invalid-feedback">Введите пароль</div>');
         valid = false;
     }
-    return valid;}
+    return valid;
+}
 
 function addUser() {
     if (validateReg()) {
@@ -36,9 +37,9 @@ function addUser() {
                 + '&password=' + $('#pass').val(),
             dataType: 'text'
         }).done(function (data) {
-            if (data == "200 user not exists") {
+            if (data == "201 user create") {
                 window.location.href = "/todo/index.html";
-            } else {
+            } else if (data == "409 email already exists") {
                 $('#pass').after('<div class="error" style="color:#ff0000; font-weight: bold">' +
                     'Пользователь уже существует </div>')
                 window.location.href = "/todo/login.html";
