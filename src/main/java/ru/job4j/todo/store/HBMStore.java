@@ -7,6 +7,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
@@ -29,17 +30,32 @@ public class HBMStore implements Store, AutoCloseable {
 
     @Override
     public Collection<Item> findAllItems() {
-        return this.tx(session -> session.createQuery("from Item").list());
+        return this.tx(session -> session.createQuery("select distinct i from Item i join fetch "
+                + "i.categories").list());
     }
 
     @Override
     public Collection<Item> findAllUnCheckedItems() {
-        return this.tx(session -> session.createQuery("from Item where done=false").list());
+        return this.tx(session -> session.createQuery("select distinct i from Item i join fetch "
+                + " i.categories where i.done=false").list());
     }
 
     @Override
-    public void saveItem(Item item) {
-        this.tx(session -> session.save(item));
+    public Collection<Category> findAllCategories() {
+        return this.tx(session -> session.createQuery("select c from Category c",
+                Category.class).list());
+    }
+
+    @Override
+    public void saveItem(Item item, String[] ids) {
+        this.tx(session -> {
+            for (String id : ids) {
+                Category category = session.find(Category.class, Integer.parseInt(id));
+                item.addCategory(category);
+                session.save(item);
+            }
+            return true;
+        });
     }
 
     @Override
@@ -68,6 +84,15 @@ public class HBMStore implements Store, AutoCloseable {
                     return (User) query.uniqueResult();
                 }
         );
+    }
+
+    @Override
+    public void deleteItem(int id) {
+        this.tx(session ->
+                session.createQuery("delete from Item where id=:id")
+                        .setParameter("id", id)
+                        .executeUpdate());
+
     }
 
     private Item searchItemForId(int id) {
@@ -102,8 +127,5 @@ public class HBMStore implements Store, AutoCloseable {
 
     public static void main(String[] args) {
         Store store = HBMStore.instOf();
-        System.out.println(store.findUserByEmail("demonick82@gmail.com"));
-        store.findAllItems().forEach(System.out::println);
-        store.findAllUnCheckedItems().forEach(System.out::println);
     }
 }

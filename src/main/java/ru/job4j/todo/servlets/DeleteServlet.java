@@ -9,12 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UpdateServlet extends HttpServlet {
+public class DeleteServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         Store store = HBMStore.instOf();
         int id = Integer.parseInt(req.getParameter("id"));
-        store.updateItem(id);
+        System.out.println("id=" + id);
+        store.deleteItem(id);
     }
 }

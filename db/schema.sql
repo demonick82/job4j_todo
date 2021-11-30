@@ -13,3 +13,8 @@ CREATE TABLE if not exists users
     name     VARCHAR,
     password VARCHAR
 );
+CREATE TABLE if not exists categories
+(
+    id       SERIAL PRIMARY KEY,
+    name     VARCHAR
+);

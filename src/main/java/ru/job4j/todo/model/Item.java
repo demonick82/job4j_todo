@@ -4,6 +4,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -18,17 +20,22 @@ public class Item {
     @CreationTimestamp
     private LocalDate created;
     private boolean done;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Item(String description) {
-        this.description = description;
-    }
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Category> categories = new ArrayList<>();
+
 
     public Item(String description, User user) {
         this.description = description;
         this.user = user;
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
     }
 
     public Item() {
@@ -90,6 +97,8 @@ public class Item {
                 .add("description='" + description + "'")
                 .add("created=" + created)
                 .add("done=" + done)
+                .add("user=" + user)
+                .add("categories=" + categories)
                 .toString();
     }
 }

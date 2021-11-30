@@ -35,6 +35,14 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>ru.job4j.todo.servlets.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CategoriesServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlets.CategoriesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlets.DeleteServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>TodoServlet</servlet-name>
@@ -59,5 +67,14 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CategoriesServlet</servlet-name>
+        <url-pattern>/categories</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteServlet</servlet-name>
+        <url-pattern>/delete</url-pattern>
     </servlet-mapping>
 </web-app>

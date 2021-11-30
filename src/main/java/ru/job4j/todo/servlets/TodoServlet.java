@@ -40,6 +40,8 @@ public class TodoServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
         Store store = HBMStore.instOf();
         String desc = req.getParameter("desc");
-        store.saveItem(new Item(desc, user));
+        String ids = req.getParameter("ids");
+        String[] id = ids.split(",");
+        store.saveItem(new Item(desc, user), id);
     }
 }

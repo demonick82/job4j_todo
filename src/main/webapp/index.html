@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
     <script src="js/index.js"></script>
     <script>
         $(document).ready(function () {
+            addCategories();
             loading();
         });
     </script>
     <title>Список заданий</title>
+
 </head>
 <body>
 <div class="container pt-5">
@@ -33,7 +35,7 @@
                     Список заданий
                 </h3>
             </div>
-            <div class="card-body ">
+            <div class="card-body">
                 <form class="row">
                     <div class="col">
                         <input type="text" class="form-control" id="descForm" placeholder="Добавить задание">
@@ -43,6 +45,15 @@
                         </button>
                     </div>
                 </form>
+                <div class="row pt-2">
+                    <div class="col">Выберете категорию задания</div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col ">
+                        <select class="form-select" multiple aria-label="multiple select example " id="category">
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -55,6 +66,7 @@
                 </th>
                 <th scope="col">Наименование задания</th>
                 <th scope="col">Имя пользователя</th>
+                <th scope="col">Категории</th>
                 <th scope="col">Дата</th>
             </tr>
             </thead>
