@@ -127,5 +127,6 @@ public class HBMStore implements Store, AutoCloseable {
 
     public static void main(String[] args) {
         Store store = HBMStore.instOf();
+        System.out.println(store.findAllItems());
     }
 }

@@ -1,13 +1,7 @@
 package ru.job4j.todo.model;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 @Entity
 @Table(name = "items")
@@ -17,13 +11,16 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
-    @CreationTimestamp
-    private LocalDate created;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
     private boolean done;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
+
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Category> categories = new ArrayList<>();
@@ -32,6 +29,7 @@ public class Item {
         Item item = new Item();
         item.description = description;
         item.user = user;
+        item.created = new Date(System.currentTimeMillis());
         return item;
     }
 
@@ -55,11 +53,11 @@ public class Item {
         this.description = description;
     }
 
-    public LocalDate getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 

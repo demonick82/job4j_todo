@@ -81,28 +81,29 @@ function parseCategories(data) {
     for (let category of data) {
         arr[i++] = category.name
     }
-    return arr.join(", ");
+    return arr.join(",<br>");
 }
 
 function addTable(data) {
     $('#descTable tbody').empty()
     for (let item of data) {
         $('#descTable tbody:first').append('<tr>'
-             + '<td >' + item.description + '</td>'
+            + '<td >' + item.description + '</td>'
             + '<td >' + item.user.name + '</td>'
             + '<td >' + parseCategories(item.categories) + '</td>'
-            + '<td>' + item.created.day + ':' + item.created.month
-            + ':' + item.created.year + '</td>'
+            + '<td>' + item.created + '</td>'
             + '<td>'
             + ' <p>'
             + ' <label>'
-            + ' <input type="checkbox" id='+item.id
-            +' onclick="update(id)"/>'
+            + ' <input type="checkbox" id=' + item.id
+            + ' onclick="update(id)"/>'
             + ' <span></span>'
             + ' </label>'
             + '</p>'
             + '</td>'
-            + '</tr>');
+            + '</tr>'
+        )
+        ;
         $('#' + item.id).attr('checked', item.done);
     }
 }
