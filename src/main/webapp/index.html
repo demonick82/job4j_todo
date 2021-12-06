@@ -1,73 +1,79 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="js/index.js"></script>
-    <script>
-        $(document).ready(function () {
-            addCategories();
-            loading();
-        });
-    </script>
-    <title>Список заданий</title>
 
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ToDo List</title>
 </head>
+
 <body>
-<div class="container pt-5">
-    <div class="row">
-        <ul class="nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/todo/logout"> Выйти </a>
-            </li>
-        </ul>
+<nav>
+    <div class="nav-wrapper">
+        <div class="container">
+            <a class="brand-logo">Todo List</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="logout">Выйти</a></li>
+            </ul>
+        </div>
     </div>
+</nav>
+<div class="container">
     <div class="row">
-        <div class="card" style="width: 100%">
-            <div class="card-header">
-                <h3 class="text-center">
-                    Список заданий
-                </h3>
-            </div>
-            <div class="card-body">
-                <form class="row">
-                    <div class="col">
-                        <input type="text" class="form-control" id="descForm" placeholder="Добавить задание">
-                    </div>
-                    <div class="col-2">
-                        <button type="button" class="btn btn-primary" onclick=addDesc()>Добавить
-                        </button>
-                    </div>
-                </form>
-                <div class="row pt-2">
-                    <div class="col">Выберете категорию задания</div>
-                </div>
-                <div class="row pt-2">
-                    <div class="col ">
-                        <select class="form-select" multiple aria-label="multiple select example " id="category">
-                        </select>
-                    </div>
+        <div class="col s12">
+            <div class="card ">
+                <div class="card-stacked row">
+                    <form class="col s12">
+                        <div class="card-content" style="padding-bottom: 10px;padding-top: 10px">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input placeholder="" id="descForm" type="text" class="validate" required>
+                                    <label class="active" for="descForm">Добавить задача</label>
+                                </div>
+                                <div class="input-field col s5">
+                                    <select id="category" multiple>
+                                        <option value="" disabled selected>Выберете категорию</option>
+                                    </select>
+                                    <label>Категории</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action right-align" style="padding-bottom: 10px;padding-top: 10px">
+                            <button type="button" class="waves-effect waves-light btn" onclick="addDesc()">
+                                добавить
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row pt-3">
-        <table class="table table-bordered border-primary table-hover" id="descTable">
+    <div class="row">
+        <div class="col s4">
+            <div class="switch">
+                <label>
+                    <input type="checkbox" id="done" onclick="loading()">
+                    <span class="lever"></span>
+                    Показать выполненные задания
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 card">
+        <table class="striped centered highlight" id="descTable">
             <thead>
             <tr>
-                <th scope="col" class="col-1">
-                    <input class="form-check" type="checkbox" id="done" onclick="loading()">
-                </th>
-                <th scope="col">Наименование задания</th>
-                <th scope="col">Имя пользователя</th>
-                <th scope="col">Категории</th>
-                <th scope="col">Дата</th>
+                <th class="col s2">Задача</th>
+                <th>Пользователь</th>
+                <th class="col s2">Категории</th>
+                <th>Дата</th>
+                <th>Выполнена</th>
             </tr>
             </thead>
             <tbody>
@@ -75,6 +81,16 @@
         </table>
     </div>
 </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="js/index.js"></script>
+<script>
+    $(document).ready(function () {
+        addCategories();
+        loading();
+    });
+</script>
 </body>
 </html>
-

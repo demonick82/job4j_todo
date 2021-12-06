@@ -18,8 +18,9 @@ function addCategories() {
         dataType: 'json'
     }).done(function (data) {
         for (let category of data) {
-            $('#category').append(`<option value="${category.id}">${category.name}</option>`)
+            $('select').append(`<option value="${category.id}">${category.name}</option>`)
         }
+        $('select').formSelect();
     }).fail(function (err) {
         console.log(err);
     });
@@ -59,17 +60,16 @@ function validate() {
     const desc = $('#descForm').val();
     const category = $('#category').val();
     let valid = true
-    $(".invalid-feedback").remove();
-    $("#descForm").removeClass("is-invalid");
     $(".error").remove();
     if (desc.length == 0) {
-        $('#descForm').addClass("is-invalid").after('<div class="invalid-feedback error" >Введите задание</div>');
+        $('#descForm').after('<div class="error" style="color:#ff0000; font-weight: bold">' +
+            'Введите задачу</div>');
         valid = false;
     }
     if (category == "") {
         $(".error").remove();
         $('#category').after('<div class="error" style="color:#ff0000; font-weight: bold">' +
-            'Выберете хотя бы одну категорию</div>')
+            'Выберете хотя бы одну категорию</div>');
         valid = false
     }
     return valid;
@@ -88,15 +88,20 @@ function addTable(data) {
     $('#descTable tbody').empty()
     for (let item of data) {
         $('#descTable tbody:first').append('<tr>'
-            + '<td>'
-            + ' <input class="form-check" type="checkbox" id=' + item.id
-            + ' onclick="update(id)">'
-            + '</td>'
-            + '<td >' + item.description + '</td>'
+             + '<td >' + item.description + '</td>'
             + '<td >' + item.user.name + '</td>'
             + '<td >' + parseCategories(item.categories) + '</td>'
             + '<td>' + item.created.day + ':' + item.created.month
             + ':' + item.created.year + '</td>'
+            + '<td>'
+            + ' <p>'
+            + ' <label>'
+            + ' <input type="checkbox" id='+item.id
+            +' onclick="update(id)"/>'
+            + ' <span></span>'
+            + ' </label>'
+            + '</p>'
+            + '</td>'
             + '</tr>');
         $('#' + item.id).attr('checked', item.done);
     }

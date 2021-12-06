@@ -21,7 +21,7 @@ public class RegServlet extends HttpServlet {
         String password = req.getParameter("password");
         User tmpUser = store.findUserByEmail(email);
         if (tmpUser == null) {
-            User newUser = new User(name, email, password);
+            User newUser = User.of(name, email, password);
             store.saveUser(newUser);
             HttpSession sc = req.getSession();
             sc.setAttribute("user", newUser);

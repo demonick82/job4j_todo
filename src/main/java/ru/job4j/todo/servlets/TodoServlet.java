@@ -42,6 +42,6 @@ public class TodoServlet extends HttpServlet {
         String desc = req.getParameter("desc");
         String ids = req.getParameter("ids");
         String[] id = ids.split(",");
-        store.saveItem(new Item(desc, user), id);
+        store.saveItem(Item.of(desc, user), id);
     }
 }

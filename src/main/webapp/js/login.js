@@ -4,20 +4,19 @@ function switchToReg() {
 
 function ValidateLogin() {
     const email = $('#email').val();
-    const pass = $('#pass').val();
+    const pass = $('#password').val();
     let valid = true
 
-    $(".invalid-feedback").remove();
-    $("#email").removeClass("is-invalid");
-    $("#pass").removeClass("is-invalid");
     $(".error").remove();
 
     if (email.length == 0) {
-        $('#email').addClass("is-invalid").after('<div class="invalid-feedback">Введите email</div>');
+        $('#email').after('<div class="error" style="color:#ff0000; font-weight: bold">' +
+            'Введите Email</div>');
         valid = false;
     }
     if (pass.length == 0) {
-        $('#pass').addClass("is-invalid").after('<div class="invalid-feedback">Введите пароль</div>');
+        $('#password').after('<div class="error" style="color:#ff0000; font-weight: bold">' +
+            'Введите пароль</div>');
         valid = false;
     }
     return valid;
@@ -29,15 +28,15 @@ function loginUser() {
             type: 'POST',
             url: 'http://localhost:8080/todo/log',
             data: '&email=' + $('#email').val()
-                + '&password=' + $('#pass').val(),
+                + '&password=' + $('#password').val(),
             dataType: 'text'
         }).done(function (data) {
             console.log(data)
             if (data == "202 password accepted") {
-                window.location.href = "/todo/index.html";
+                window.location.href = "index.html";
             } else if (data == "401 unauthorized") {
                 $(".error").remove();
-                $('#pass').after('<div class="error" style="color:#ff0000; font-weight: bold">' +
+                $('#password').parent().after('<div class="error" style="color:#ff0000; font-weight: bold">' +
                     'Неверный логин или пароль</div>')
             }
         }).fail(function (err) {

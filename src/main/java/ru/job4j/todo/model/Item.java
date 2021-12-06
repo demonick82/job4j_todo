@@ -28,17 +28,15 @@ public class Item {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Category> categories = new ArrayList<>();
 
-
-    public Item(String description, User user) {
-        this.description = description;
-        this.user = user;
+    public static Item of(String description, User user) {
+        Item item = new Item();
+        item.description = description;
+        item.user = user;
+        return item;
     }
 
     public void addCategory(Category category) {
         this.categories.add(category);
-    }
-
-    public Item() {
     }
 
     public int getId() {
